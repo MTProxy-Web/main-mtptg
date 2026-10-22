@@ -99,6 +99,20 @@ a:hover{color:var(--accent-hover)}
 .proxy-tag.checking{background:rgba(100,116,139,.1);color:#64748b}
 .proxy-status{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;flex-shrink:0}
 
+#proxyGrid .proxy-card{min-width:0}
+#proxyGrid .proxy-name{max-width:none}
+#proxyGrid .btn-connect{min-height:44px;flex-shrink:0;background:#1479ad}
+#proxyGrid .btn-connect:hover{background:#106b98;transform:none}
+#proxyGrid .btn-connect:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+#proxyGrid .proxy-tag.online{color:#8bd58a;background:rgba(79,174,78,.12)}
+#proxyGrid .proxy-tag.offline{color:#ff9696;background:rgba(239,68,68,.12)}
+#proxyGrid .is-highlight{position:relative;border-color:var(--accent);background:#202f40}
+#proxyGrid .is-highlight:hover{border-color:#82d6ff;background:#25394b}
+#proxyGrid .is-highlight .proxy-name{font-weight:700}
+#proxyGrid .proxy-highlight-pin{position:absolute;inset-block-start:-10px;inset-inline-end:-7px;z-index:1;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:var(--bg-secondary);border:2px solid var(--bg-secondary);pointer-events:none}
+#proxyGrid .proxy-highlight-pin svg{transform:rotate(45deg)}
+@media(min-width:601px) and (max-width:839px){#proxyGrid{grid-template-columns:1fr}}
+
 /* ===== PUBLIC PROXIES SPOILER ===== */
 .pub-spoiler{margin-top:16px;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden}
 .pub-spoiler-header{background:var(--bg-card);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;cursor:pointer;font-weight:600;font-size:14px;color:var(--text-primary);user-select:none;transition:var(--transition)}
@@ -406,19 +420,31 @@ function flagImg(c){const code=String(c||'xx').toLowerCase().replace(/[^a-z-]/g,
 // ============ PROXIES ============
 const SITE_PROXY_URL = '/v1/site-proxies';
 
+function prepareProxies(data){
+  const seen=new Set();
+  const unique=data.map(p=>({
+    geo:p.geo||p.country||'UN',
+    server:p.server||p.host,
+    port:p.port,
+    secret:p.secret,
+    status:p.status||'checking',
+    eventId:String(p.placement_id||''),
+    highlight:p.highlight===true
+  })).filter(p=>{
+    const key=p.eventId?'id:'+p.eventId:JSON.stringify([p.server,p.port,p.secret]);
+    if(seen.has(key))return false;
+    seen.add(key);
+    return true;
+  });
+  return [...shuffle(unique.filter(p=>p.highlight)),...shuffle(unique.filter(p=>!p.highlight))];
+}
+
 function loadProxies(){
   fetch(SITE_PROXY_URL,{cache:'no-store'})
     .then(r=>{if(!r.ok)throw new Error('Sponsored proxy source: '+r.status);return r.json();})
     .then(_0x7b)
     .then(data => {
-      proxies = shuffle(data.map(p => ({
-        geo: p.geo || p.country || 'UN',
-        server: p.server || p.host,
-        port: p.port,
-        secret: p.secret,
-        status: p.status || 'checking',
-        eventId: p.placement_id || ''
-      })));
+      proxies = prepareProxies(data);
       renderProxies();
     })
     .catch(err => {
@@ -530,7 +556,8 @@ function renderProxies(){
     const eventId=/^proxy_[0-9]+$/.test(String(p.eventId||''))?String(p.eventId):'';
     const eventClass=eventId?' proxy-event '+eventId:'';
     const eventAttrs=eventId?' data-rybbit-event="'+eventId+'" data-rybbit-prop-placement_id="'+eventId+'"':'';
-    return '<div class="proxy-card"><div class="proxy-info"><div class="proxy-flag">'+flagImg(p.geo)+'</div><div class="proxy-meta"><div class="proxy-name" title="'+esc(p.server)+'">'+esc(p.server)+'</div><div class="proxy-details"><span class="proxy-tag">'+esc(p.geo)+'</span><span class="proxy-tag '+status+'"><span class="proxy-status"></span>'+esc(t.proxies[status])+'</span></div></div></div><a href="tg://proxy?server='+esc(p.server)+'&port='+p.port+'&secret='+esc(p.secret)+'" class="btn-connect'+eventClass+'"'+eventAttrs+'>'+t.proxies.connect+'</a></div>';
+    const pin=p.highlight?'<span class="proxy-highlight-pin" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 9V3H8v6l-3 4v2h14v-2l-3-4zM12 15v7M7 3h10"/></svg></span>':'';
+    return '<div class="proxy-card'+(p.highlight?' is-highlight':'')+'">'+pin+'<div class="proxy-info"><div class="proxy-flag">'+flagImg(p.geo)+'</div><div class="proxy-meta"><div class="proxy-name" title="'+esc(p.server)+'">'+esc(p.server)+'</div><div class="proxy-details"><span class="proxy-tag">'+esc(p.geo)+'</span><span class="proxy-tag '+status+'"><span class="proxy-status"></span>'+esc(t.proxies[status])+'</span></div></div></div><a href="tg://proxy?server='+esc(p.server)+'&port='+p.port+'&secret='+esc(p.secret)+'" class="btn-connect'+eventClass+'"'+eventAttrs+'>'+t.proxies.connect+'</a></div>';
   }).join('');
 }
 
