@@ -1,3 +1,7 @@
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+  Referrer-Policy: no-referrer
+
 /manifest.json
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
