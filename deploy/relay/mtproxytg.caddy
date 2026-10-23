@@ -1,4 +1,6 @@
-http://mtproxy.bar {
+http://mtproxy.bar, http://*.mtproxy.bar {
+	@entry_http host mtproxy.bar
+	header @entry_http X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
 	handle /.well-known/acme-challenge/* {
 		root * /var/www/mtproxytg-acme
 		file_server
@@ -8,18 +10,7 @@ http://mtproxy.bar {
 	}
 }
 
-http://*.mtproxy.bar {
-	header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
-	handle /.well-known/acme-challenge/* {
-		root * /var/www/mtproxytg-acme
-		file_server
-	}
-	handle {
-		redir https://{host}{uri} 308
-	}
-}
-
-mtproxy.bar {
+mtproxy.bar, *.mtproxy.bar {
 	tls /opt/mtproxy-relay/manual-certs/mtproxytg-wildcard/fullchain.pem /opt/mtproxy-relay/manual-certs/mtproxytg-wildcard/privkey.pem
 	encode zstd gzip
 	header {
@@ -30,59 +21,25 @@ mtproxy.bar {
 		-Server
 		defer
 	}
-	handle /go {
-		header X-Robots-Tag "noindex, nofollow"
-		reverse_proxy 127.0.0.1:8791
-	}
-	handle /v1/site-proxies {
-		header X-Robots-Tag noindex
-		reverse_proxy http://10.8.0.2:3013 {
-			header_up Host proxy-sponsor.llimonix.dev
-			header_up -Cookie
-			header_up -Authorization
+	@entry host mtproxy.bar
+	handle @entry {
+		header X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
+		handle /go {
+			reverse_proxy 127.0.0.1:8791
 		}
-	}
-	handle /v1/public-proxies {
-		root * /opt/mtproxy-relay/public
-		rewrite * /mtproxy.json
-		header X-Robots-Tag noindex
-		header Cache-Control "public, max-age=60, stale-while-revalidate=300"
-		file_server
-	}
-	handle {
-		reverse_proxy http://10.8.0.2:3017 {
-			transport http {
-				dial_timeout 5s
-				response_header_timeout 30s
+		handle {
+			reverse_proxy http://10.8.0.2:3016 {
+				transport http {
+					dial_timeout 5s
+					response_header_timeout 30s
+				}
 			}
 		}
-	}
-}
-
-*.mtproxy.bar {
-	tls /opt/mtproxy-relay/manual-certs/mtproxytg-wildcard/fullchain.pem /opt/mtproxy-relay/manual-certs/mtproxytg-wildcard/privkey.pem
-	encode zstd gzip
-	header {
-		X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
-		Referrer-Policy "no-referrer"
-		X-Content-Type-Options "nosniff"
-		X-Frame-Options "SAMEORIGIN"
-		Strict-Transport-Security "max-age=31536000"
-		-Server
-		defer
 	}
 	handle {
 		forward_auth 127.0.0.1:8791 {
 			uri /_check
 			header_up X-Original-Host {host}
-		}
-		handle /robots.txt {
-			respond "User-agent: *
-Disallow: /
-" 200
-		}
-		handle /sitemap.xml {
-			respond 404
 		}
 		handle /v1/site-proxies {
 			reverse_proxy http://10.8.0.2:3013 {
@@ -98,7 +55,7 @@ Disallow: /
 			file_server
 		}
 		handle {
-			reverse_proxy http://10.8.0.2:3015 {
+			reverse_proxy http://10.8.0.2:3017 {
 				transport http {
 					dial_timeout 5s
 					response_header_timeout 30s
