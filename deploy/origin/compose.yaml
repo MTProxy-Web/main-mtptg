@@ -23,3 +23,26 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+
+  canonical:
+    image: nginx:stable-alpine
+    container_name: mtproxytg-canonical
+    restart: unless-stopped
+    user: '101:101'
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - '10.8.0.2:3017:8080'
+    volumes:
+      - ../../public:/usr/share/nginx/html:ro
+      - ./nginx-seo.conf:/etc/nginx/nginx.conf:ro
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1:8080/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3

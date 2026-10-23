@@ -1,0 +1,110 @@
+[
+  {
+    "view": "home",
+    "url": "/",
+    "title": "Бесплатные прокси для Telegram: MTProto | MTProxy",
+    "description": "Бесплатные MTProto-прокси для Telegram. Выберите сервер и подключитесь в один клик. Инструкции по настройке на Android, iPhone и компьютере."
+  },
+  {
+    "view": "howto",
+    "url": "/howto/",
+    "title": "Как подключить прокси",
+    "description": "Пошаговая инструкция для любого устройства"
+  },
+  {
+    "view": "about",
+    "url": "/about/",
+    "title": "О сервисе",
+    "description": "Мы поддерживаем актуальный список публичных MTProto прокси и даём удобные ссылки для быстрого подключения в Telegram."
+  },
+  {
+    "view": "pwa",
+    "url": "/pwa/",
+    "title": "Добавить на экран",
+    "description": "Быстрый доступ к прокси одним нажатием"
+  },
+  {
+    "view": "contacts",
+    "url": "/contacts/",
+    "title": "Контакты",
+    "description": "Связаться с нами"
+  },
+  {
+    "view": "blog",
+    "url": "/blog/",
+    "title": "Блог",
+    "description": "Подключение, настройка и решение проблем с прокси в Telegram."
+  },
+  {
+    "view": "article",
+    "url": "/blog/kak-podklyuchit-proksi-telegram/",
+    "title": "Как подключить прокси в Telegram",
+    "description": "Как подключить MTProto-прокси в Telegram по ссылке или вручную: настройка на Android, iPhone и компьютере, адрес сервера, порт и secret."
+  },
+  {
+    "view": "article",
+    "url": "/blog/pochemu-ne-rabotaet-proksi-telegram/",
+    "title": "Почему не работает прокси в Telegram",
+    "description": "Что проверить, если MTProto-прокси в Telegram недоступен: адрес, порт, secret, другой сервер и подключение через Wi-Fi или мобильную сеть."
+  },
+  {
+    "view": "article",
+    "url": "/blog/mtproto-ili-socks5/",
+    "title": "MTProto и SOCKS5: какой прокси выбрать",
+    "description": "Чем отличаются MTProto и SOCKS5 для Telegram: параметры подключения, работа в других приложениях и какие данные доступны оператору прокси."
+  },
+  {
+    "view": "article",
+    "url": "/blog/telegram-zavis-na-podklyuchenii/",
+    "title": "Telegram завис на «Подключение…»: что проверить",
+    "description": "Что делать, если Telegram долго пишет «Подключение…»: проверка интернета, настроек MTProto-прокси и подключения через другую сеть."
+  },
+  {
+    "view": "article",
+    "url": "/blog/telegram-ne-zagruzhaet-foto-i-video/",
+    "title": "Telegram не загружает фото и видео: что делать",
+    "description": "Почему в Telegram не загружаются фото и видео: как проверить автозагрузку, свободное место, сеть и выбранный MTProto-прокси."
+  },
+  {
+    "view": "article",
+    "url": "/blog/proksi-telegram-iphone/",
+    "title": "Как подключить прокси в Telegram на iPhone и iPad",
+    "description": "Подключение бесплатного MTProto-прокси из нашего каталога на iPhone и iPad: ссылка, ручная настройка, проверка соединения и смена сервера."
+  },
+  {
+    "view": "article",
+    "url": "/blog/proksi-telegram-android/",
+    "title": "Как подключить прокси в Telegram на Android",
+    "description": "Как включить MTProto-прокси из нашего каталога на Android, проверить подключение, сменить сервер и разобраться с ограничениями мобильных данных."
+  },
+  {
+    "view": "article",
+    "url": "/blog/proksi-telegram-kompyuter/",
+    "title": "Как подключить прокси в Telegram на компьютере: Windows, macOS и Linux",
+    "description": "Подключение MTProto-прокси в Telegram на компьютере: кнопка каталога, настройки Telegram Desktop и macOS, проверка соединения и частые ошибки."
+  },
+  {
+    "view": "article",
+    "url": "/blog/telegram-wifi-mobilnyy-internet/",
+    "title": "Telegram работает через Wi-Fi, но не через мобильный интернет: что проверить",
+    "description": "Как проверить Telegram и MTProto-прокси в двух сетях: мобильные данные, разрешения приложения, доступность сервера и сравнение результатов."
+  },
+  {
+    "view": "article",
+    "url": "/blog/webproxy-telegram/",
+    "title": "WebProxy в Telegram: что это и чем отличается от MTProto",
+    "description": "Что меняет WebProxy в Telegram, чем отличаются ссылки webproxy и proxy, как проверить поддержку клиента и почему обычный MTProto нельзя просто переименовать."
+  },
+  {
+    "view": "article",
+    "url": "/blog/bezopasnost-proksi-telegram/",
+    "title": "Безопасно ли использовать прокси в Telegram: что видит оператор",
+    "description": "Какие данные доступны владельцу MTProto-прокси, чем отличаются шифрование и анонимность и как подключаться к каталогу без передачи кодов входа."
+  },
+  {
+    "view": "article",
+    "url": "/blog/zvonki-cherez-proksi-telegram/",
+    "title": "Работают ли звонки через прокси в Telegram",
+    "description": "Почему сообщения Telegram могут работать через MTProto, а звонки нет: отдельное соединение, настройка SOCKS5, проверка сети, микрофона и камеры."
+  }
+]
