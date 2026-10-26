@@ -40,6 +40,7 @@ mtproxy.bar, *.mtproxy.bar {
 		forward_auth 127.0.0.1:8791 {
 			uri /_check
 			header_up X-Original-Host {host}
+			header_up X-Original-URI {uri}
 		}
 		handle /v1/site-proxies {
 			reverse_proxy http://10.8.0.2:3013 {
