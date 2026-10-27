@@ -23,8 +23,8 @@ for(const page of pages){
   assert(html.includes('content="index, follow, max-image-preview:large"'),'robots');
   assert.equal((html.match(/var id='1dadaf455d89'/g)||[]).length,1,'original analytics integration');
   assert(!/MOCK_PROXY|fixtures\/|\.example\.com/.test(html),'no preview fixtures');
-  assert(html.includes("const SITE_PROXY_URL = '/v1/site-proxies'"),'live sponsored API');
-  assert(html.includes("const PUBLIC_PROXY_URL = '/v1/public-proxies'"),'live public API');
+  assert(html.includes("const SITE_PROXY_URL = 'https://proxy-sponsor.llimonix.dev/v1/site-proxies'"),'live sponsored API');
+  assert(html.includes("const PUBLIC_PROXY_URL = 'https://proxy-public.llimonix.dev/v1/public-proxies'"),'live public API');
   const title=html.match(/<title>([^<]+)<\/title>/)[1];assert(!titles.has(title),'unique title');titles.add(title);
   assert(html.match(/<meta name="description" content="[^"]+">/),'description');
   const ids=[...html.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size,'unique IDs');
