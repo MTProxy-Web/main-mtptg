@@ -232,7 +232,7 @@ a:hover{color:var(--accent-hover)}
         <span data-i18n="hero.btn_channel">Наш канал</span>
       </a>
       <a href="/howto/" class="btn btn-outline" onclick="navigate('howto');return false" data-rybbit-event="howto_click" data-i18n="hero.btn_howto">Как подключить</a>
-      <a href="https://tribukvy.link/?utm_source=mtproxy_site" class="btn btn-danger" target="_blank" rel="noopener" data-rybbit-event="custom_click" data-i18n="hero.btn_custom">Oбxoд бeлыx cпискoв</a>
+      <button type="button" class="btn btn-danger" style="line-height:inherit" onclick="openCustomLink()" data-rybbit-event="custom_click" data-i18n="hero.btn_custom">Oбxoд бeлыx cпискoв</button>
     </div>
   </section>
 
@@ -440,6 +440,7 @@ if(currentView==='home')loadProxies();
 
 // ============ NAVIGATION ============
 function navigate(v){location.href=v==='home'?'/':'/'+v+'/';}
+function openCustomLink(){window.open(atob('aHR0cHM6Ly90cmlidWt2eS5saW5rLz91dG1fc291cmNlPW10cHJveHlfc2l0ZQ=='),'_blank','noopener,noreferrer');}
 function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open');}
 function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
 

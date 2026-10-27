@@ -220,7 +220,7 @@ a:hover{color:var(--accent-hover)}
         <span data-i18n="hero.btn_channel"></span>
       </a>
       <a href="#" class="btn btn-outline" onclick="navigate('howto');return false" data-rybbit-event="howto_click" data-i18n="hero.btn_howto"></a>
-      <a href="https://tribukvy.link/?utm_source=mtproxy_site" class="btn btn-danger" target="_blank" rel="noopener" data-rybbit-event="custom_click" data-i18n="hero.btn_custom"></a>
+      <button type="button" class="btn btn-danger" style="line-height:inherit" onclick="openCustomLink()" data-rybbit-event="custom_click" data-i18n="hero.btn_custom"></button>
     </div>
   </section>
 
@@ -467,6 +467,7 @@ loadProxies();
 
 // ============ NAVIGATION ============
 function navigate(v){currentView=v;location.hash=v==='home'?'':v;closeMobile();render();window.scrollTo(0,0);}
+function openCustomLink(){window.open(atob('aHR0cHM6Ly90cmlidWt2eS5saW5rLz91dG1fc291cmNlPW10cHJveHlfc2l0ZQ=='),'_blank','noopener,noreferrer');}
 function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open');}
 function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
 
