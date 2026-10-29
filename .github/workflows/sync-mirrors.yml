@@ -1,0 +1,32 @@
+name: Sync mirrors
+on:
+  push:
+    branches: [simple-html]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mirror-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - run: node --test .github/tests/*.test.*
+      - run: node scripts/build-site.cjs
+      - run: node scripts/verify-site.cjs
+      - run: git add -A -- public
+      - if: vars.MIRROR_SYNC_ENABLED == 'true'
+        run: node .github/scripts/sync-mirrors.mjs
+        env:
+          MIRROR_DEPLOY_KEY_1: ${{ secrets.MIRROR_DEPLOY_KEY_1 }}
+          MIRROR_DEPLOY_KEY_2: ${{ secrets.MIRROR_DEPLOY_KEY_2 }}
+          MIRROR_DEPLOY_KEY_3: ${{ secrets.MIRROR_DEPLOY_KEY_3 }}
+          MIRROR_DEPLOY_KEY_4: ${{ secrets.MIRROR_DEPLOY_KEY_4 }}
+          MIRROR_DEPLOY_KEY_5: ${{ secrets.MIRROR_DEPLOY_KEY_5 }}

@@ -1,0 +1,29 @@
+{
+  "mirrors": [
+    {
+      "repository": "MTProxy-Web/web-1",
+      "branch": "simple-html",
+      "key": "MIRROR_DEPLOY_KEY_1"
+    },
+    {
+      "repository": "MTProxy-Web/web-2",
+      "branch": "simple-html",
+      "key": "MIRROR_DEPLOY_KEY_2"
+    },
+    {
+      "repository": "MTProxy-Web/web-3",
+      "branch": "simple-html",
+      "key": "MIRROR_DEPLOY_KEY_3"
+    },
+    {
+      "repository": "MTProxy-Web/web-4",
+      "branch": "simple-html",
+      "key": "MIRROR_DEPLOY_KEY_4"
+    },
+    {
+      "repository": "MTProxy-Web/web-5",
+      "branch": "simple-html",
+      "key": "MIRROR_DEPLOY_KEY_5"
+    }
+  ]
+}
