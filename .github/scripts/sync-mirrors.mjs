@@ -12,7 +12,7 @@ export function git(args,cwd,options={}){
 }
 
 export function sharedFile(file){
-  return !['CNAME','PENDING_PRODUCTION.md','DEPLOYMENTS.md','mtproxy-bar-subdomains.json'].includes(file)&&file!=='.github'&&!file.startsWith('.github/');
+  return !['CNAME','PENDING_PRODUCTION.md','DEPLOYMENTS.md','mtproxy-bar-subdomains.json','subdomains.json'].includes(file)&&file!=='.github'&&!file.startsWith('.github/');
 }
 
 function safePath(root,file){

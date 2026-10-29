@@ -5,3 +5,4 @@ out/
 *.tsbuildinfo
 package-lock.json
 /mtproxy-bar-subdomains.json
+subdomains.json

@@ -14,7 +14,7 @@ function initialize(root){fs.mkdirSync(root,{recursive:true});git(['init','-b','
 function commit(root){git(['add','-A'],root);git(['commit','-m','test(fixtures): update repository files'],root);return git(['rev-parse','HEAD'],root);}
 test('mirror synchronization preserves domains and workflows, removes stale files, and is idempotent',t=>{
   const root=fixture(t),source=path.join(root,'source');initialize(source);
-  write(source,'index.html','new shared design');write(source,'assets/site.css','new stylesheet');write(source,'CNAME','source.mtproxy.bar\n');write(source,'.github/workflows/private.yml','source workflow');write(source,'mtproxy-bar-subdomains.json','private history');
+  write(source,'index.html','new shared design');write(source,'assets/site.css','new stylesheet');write(source,'CNAME','source.mtproxy.bar\n');write(source,'.github/workflows/private.yml','source workflow');write(source,'mtproxy-bar-subdomains.json','private history');write(source,'subdomains.json','private history');
   const revision=commit(source);
   for(const label of ['fixture-a','fixture-b']){
     const target=path.join(root,label);initialize(target);
@@ -25,6 +25,7 @@ test('mirror synchronization preserves domains and workflows, removes stale file
     assert.equal(fs.readFileSync(path.join(target,'.github/workflows/keep.yml'),'utf8'),'target workflow');
     assert(!fs.existsSync(path.join(target,'.github/workflows/private.yml')));
     assert(!fs.existsSync(path.join(target,'mtproxy-bar-subdomains.json')));
+    assert(!fs.existsSync(path.join(target,'subdomains.json')));
     assert(!fs.existsSync(path.join(target,'obsolete.txt')));
     const head=git(['rev-parse','HEAD'],target);
     assert.equal(prepareMirror(source,target,revision),false);
