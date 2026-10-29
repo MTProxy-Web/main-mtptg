@@ -63,7 +63,7 @@ export function validateManifest(manifest){
   return mirrors;
 }
 
-export async function synchronize(source){
+export async function synchronize(source,{dryRun=true}={}){
   const mirrors=validateManifest(JSON.parse(fs.readFileSync(path.join(source,'.github/mirrors.json'),'utf8')));
   const revision=git(['rev-parse','HEAD'],source);
   for(const mirror of mirrors)if(!process.env[mirror.key])throw new Error('Missing deploy key: '+mirror.key);
@@ -78,15 +78,16 @@ export async function synchronize(source){
       env.GIT_SSH_COMMAND='ssh -i "'+keyPath+'" -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="'+knownHosts+'"';
       const target=path.join(workspace,mirror.repository.slice(-5));
       git(['clone','--single-branch','--branch',mirror.branch,'git@github.com:'+mirror.repository+'.git',target],source,{env});
+      const before=git(['rev-parse','HEAD'],target);
       const changed=prepareMirror(source,target,revision);
-      prepared.push({mirror,target,env,changed});
+      prepared.push({mirror,target,env,changed,before});
     }
     for(const item of prepared){
-      if(item.changed)git(['push','origin','HEAD:refs/heads/'+item.mirror.branch],item.target,{env:item.env});
+      if(item.changed&&!dryRun)git(['push','origin','HEAD:refs/heads/'+item.mirror.branch],item.target,{env:item.env});
       const head=git(['rev-parse','HEAD'],item.target);
       const remote=git(['ls-remote','origin','refs/heads/'+item.mirror.branch],item.target,{env:item.env}).split(/\s+/)[0];
-      if(head!==remote)throw new Error('Mirror push verification failed: '+item.mirror.repository);
-      console.log(item.mirror.repository+': '+(item.changed?'updated':'unchanged')+' '+head);
+      if(remote!==(dryRun?item.before:head))throw new Error('Mirror revision verification failed: '+item.mirror.repository);
+      console.log(item.mirror.repository+': '+(dryRun?'dry run, ':'' )+(item.changed?'update prepared':'unchanged')+' '+head);
     }
   }finally{
     const relative=path.relative(os.tmpdir(),workspace);
@@ -94,4 +95,4 @@ export async function synchronize(source){
   }
 }
 
-if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))await synchronize(path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..'));
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))await synchronize(path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..'),{dryRun:process.env.MIRROR_SYNC_ENABLED!=='true'});

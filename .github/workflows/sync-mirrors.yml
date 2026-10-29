@@ -22,9 +22,10 @@ jobs:
       - run: node scripts/build-site.cjs
       - run: node scripts/verify-site.cjs
       - run: git add -A -- public
-      - if: vars.MIRROR_SYNC_ENABLED == 'true'
+      - if: vars.MIRROR_KEYS_READY == 'true'
         run: node .github/scripts/sync-mirrors.mjs
         env:
+          MIRROR_SYNC_ENABLED: ${{ vars.MIRROR_SYNC_ENABLED }}
           MIRROR_DEPLOY_KEY_1: ${{ secrets.MIRROR_DEPLOY_KEY_1 }}
           MIRROR_DEPLOY_KEY_2: ${{ secrets.MIRROR_DEPLOY_KEY_2 }}
           MIRROR_DEPLOY_KEY_3: ${{ secrets.MIRROR_DEPLOY_KEY_3 }}
